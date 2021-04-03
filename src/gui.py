@@ -35,7 +35,7 @@ class SudokuButton(MDRectangleFlatButton):
 
 class Sudoku(MDBoxLayout):
     def print(self):
-        with open("gui_input.txt", "w") as f:
+        with open("io/gui_input.txt", "w") as f:
             boxes = self.ids.board.children[::-1]
             for idx, box in enumerate(boxes):
                 if box.value is not None:
@@ -45,7 +45,3 @@ class Sudoku(MDBoxLayout):
 class SudokuSolverApp(MDApp):
     def build(self):
         self.theme_cls.theme_style = "Dark"
-
-
-if __name__ == "__main__":
-    SudokuSolverApp().run()
