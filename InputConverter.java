@@ -8,7 +8,7 @@ class InputConverter {
     public static void main(String[] args) {
         try {
             FileWriter file_template = new FileWriter("input.txt");
-            File file_user = new File("user_input.txt");
+            File file_user = new File("gui_input.txt");
             Scanner reader = new Scanner(file_user);
             String klausa_input = input_user(reader, file_template);
             input_template(file_template, klausa_input);
