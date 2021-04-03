@@ -1,13 +1,16 @@
+#:import SudokuBox src.gui.SudokuBox
 #:import SelectButton src.gui.SelectButton
-#:import SudokuButton src.gui.SudokuButton
+#:import SudokuCell src.gui.SudokuCell
 #:import SelectPopup src.gui.SelectPopup
 #:import partial functools.partial
 
-<SelectButton, SudokuButton>:
+<SelectButton, SudokuCell>:
     text: self.value if self.value else ''
     size_hint: (1, 1)
 
 <SelectPopup>:
+    title: "Choose a number!"
+    size_hint: (0.5, 0.5)
     MDGridLayout:
         cols: 4
         on_parent:
@@ -16,22 +19,53 @@
             btn.bind(on_press=partial(root.select, str(i))); \
             self.add_widget(btn)
 
+<SolvePopup>:
+    title: "Error!"
+    auto_dismiss: False
+    size_hint: (0.5, 0.5)
+
+    MDBoxLayout:
+        orientation: "vertical"
+        Label:
+            text: "This sudoku is unsatisfiable."
+            theme_text_color: "Primary"
+            pos_hint: {'center_x':.5, 'center_y': .5}
+        MDFillRoundFlatButton:
+            text: 'Close'
+            size_hint: (1, 0.2)
+            bg: (1, 0, 0, 1)
+            pos_hint: {'center_x':.5, 'center_y': .5}
+            on_release: root.dismiss()
+
+<SudokuBox>:
+    MDGridLayout:
+        id: box
+        size_hint: (1, 1)
+        cols: 4
+
+        # SudokuButton:
+        on_parent:
+            for i in range(16): self.add_widget(SudokuCell())
+
 <Sudoku>:
+    spacing: 10
     MDBoxLayout:
         orientation: "vertical"
         MDGridLayout:
             id: board
             size_hint: (1, 1)
             cols: 4
+            spacing: 10
+            # padding: 1
 
             on_parent:
-                for i in range(16): self.add_widget(SudokuButton())
+                for i in range(16): self.add_widget(SudokuBox())
 
-        MDRaisedButton:
+        MDBoxLayout:
             size_hint: (1, 0.2)
-            text: "Solve!"
-            on_press: root.print()
-
-
+            MDRaisedButton:
+                size_hint: (0.4, 0.4)
+                text: "Solve!"
+                on_press: root.solve()
 
 Sudoku:
