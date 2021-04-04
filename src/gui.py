@@ -1,12 +1,17 @@
 import os
+import subprocess
 import time
+
 from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDRectangleFlatButton
-from kivymd.uix.floatlayout import MDFloatLayout
+from kivymd.uix.gridlayout import MDGridLayout
+from kivy.core.window import Window
+
+from .output_converter import OutputConverter
 
 
 class SelectButton(Button):
@@ -44,7 +49,7 @@ class SolvePopup(Popup):
     pass
 
 
-class Sudoku(MDFloatLayout):
+class Sudoku(MDGridLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.popup = SolvePopup()
@@ -76,9 +81,14 @@ class Sudoku(MDFloatLayout):
                             cell.value,
                             file=f,
                         )
+        p = subprocess.Popen(["src/InputConverter"], cwd=os.getcwd())
+        p.wait()
 
     def read_output(self):
         output_path = "io/gui_output.txt"
+
+        op = OutputConverter()
+        op.convert_output()
 
         while not os.path.exists(output_path):
             time.sleep(0.1)
@@ -91,8 +101,10 @@ class Sudoku(MDFloatLayout):
                 line = f.readline()
                 while line:
                     row, col, val = line.split()
+                    print(line)
                     grid[int(row) - 1][int(col) - 1] = val
                     line = f.readline()
+                # print(grid)
                 self.update(grid)
             else:
                 self.popup.open()
@@ -112,3 +124,4 @@ class Sudoku(MDFloatLayout):
 class SudokuSolverApp(MDApp):
     def build(self):
         self.theme_cls.theme_style = "Dark"
+        Window.size = (600, 600)
