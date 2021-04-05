@@ -17,11 +17,13 @@ class OutputConverter:
         if status == "SAT":
             f_out.write("1")
             sat = f_in.readline().split(" ")
-            sat = [int(i) for i in sat if "-" not in i]
+            sat = [int(i) for i in sat if "-" not in i and i != ""]
             for i in sat:
-                baris = i // 256 + 1
-                kolom = i // 16 % 16 + 1
+                baris = (i-1) // 256 + 1
+                kolom = (i-1) // 16 % 16 + 1
                 angka = i % 16
+                if angka == 0:
+                    angka = 16
 
                 f_out.write("\n%d %d %d" % (baris, kolom, angka))
         else:
