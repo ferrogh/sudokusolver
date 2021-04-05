@@ -4,12 +4,13 @@ import subprocess
 
 class OutputConverter:
     def convert_output(self):
-        p = subprocess.Popen(
-            ["minisat", "io/input.txt", "io/output.txt"], cwd=os.getcwd()
+        minisat_out = open("io/minisat_output.txt", "w")
+        subprocess.call(
+            "minisat io/input.txt io/output.txt",
+            cwd=os.getcwd(),
+            stdout=minisat_out,
+            stderr=minisat_out,
         )
-        p.wait()
-        # print(os.path.exists("io/input.txt"))
-        # os.system('cmd /c "minisat io/input.txt io/output.txt"')
 
         f_in = open("io/output.txt", "r")
         f_out = open("io/gui_output.txt", "w")
@@ -19,8 +20,8 @@ class OutputConverter:
             sat = f_in.readline().split(" ")
             sat = [int(i) for i in sat if "-" not in i and i != ""]
             for i in sat:
-                baris = (i-1) // 256 + 1
-                kolom = (i-1) // 16 % 16 + 1
+                baris = (i - 1) // 256 + 1
+                kolom = (i - 1) // 16 % 16 + 1
                 angka = i % 16
                 if angka == 0:
                     angka = 16

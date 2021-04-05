@@ -27,7 +27,7 @@ class SelectPopup(Popup):
 
 
 class SudokuCell(MDRectangleFlatButton):
-    value = StringProperty(None)
+    value = StringProperty(None, allownone=True)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -54,18 +54,20 @@ class Sudoku(MDGridLayout):
         super().__init__(**kwargs)
         self.popup = SolvePopup()
 
+    def clear(self):
+        boxes = self.ids.board.children[::-1]
+        for idx1, box in enumerate(boxes):
+            cells = box.ids.box.children[::-1]
+            for idx2, cell in enumerate(cells):
+                cell.set_value(None)
+
     def solve(self):
 
-        # Reset i/o files
-        # File output sebelumnya perlu dihapus biar ga baca yg sebelumnya
-        # Unkomen dibawah kalo kode ngubah output minisat ke gui udh jadi
-        # output_path = "io/gui_output.txt"
-        # if os.path.exists(output_path):
-        #     os.remove(output_path)
         self.write_input()
         self.read_output()
 
     def write_input(self):
+        # print("1")
         input_path = "io/gui_input.txt"
         with open(input_path, "w") as f:
             boxes = self.ids.board.children[::-1]
@@ -81,8 +83,8 @@ class Sudoku(MDGridLayout):
                             cell.value,
                             file=f,
                         )
-        p = subprocess.Popen(["src/InputConverter"], cwd=os.getcwd())
-        p.wait()
+
+        subprocess.check_output(["src/InputConverter"], cwd=os.getcwd())
 
     def read_output(self):
         output_path = "io/gui_output.txt"
@@ -101,10 +103,9 @@ class Sudoku(MDGridLayout):
                 line = f.readline()
                 while line:
                     row, col, val = line.split()
-                    print(line)
                     grid[int(row) - 1][int(col) - 1] = val
                     line = f.readline()
-                # print(grid)
+
                 self.update(grid)
             else:
                 self.popup.open()
