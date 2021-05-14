@@ -8,9 +8,17 @@ class InputConverter {
     public static void main(String[] args) {
         try {
             FileWriter file_template = new FileWriter("input.txt");
+
             File file_user = new File("gui_input.txt");
-            Scanner reader = new Scanner(file_user);
-            String klausa_input = input_user(reader, file_template);
+            Scanner reader_user = new Scanner(file_user);
+            String klausa_user = input_user(reader_user, file_template);
+
+            File file_solusi = new File("solution.txt");
+            Scanner reader_solusi = new Scanner(file_solusi);
+            String klausa_solusi = input_solusi(reader_solusi);
+
+            String klausa_input = klausa_user + klausa_solusi;
+
             input_template(file_template, klausa_input);
         } catch (IOException e) {
             System.out.println("An error occurred.");
@@ -19,7 +27,6 @@ class InputConverter {
     }
 
     public static int ThreeDtoint(int a, int b, int c) {
-        // return ((a)*(100) + (b)*10 + c);
         return ((a-1)*(UKURAN*UKURAN) + (b-1)*UKURAN + c);
     }
 
@@ -37,6 +44,23 @@ class InputConverter {
             }
         }
         return klausa_input.toString();
+    }
+
+    public static String input_solusi(Scanner reader) {
+        StringBuilder klausa_solusi = new StringBuilder("");
+        while (reader.hasNextLine()) {
+            String line = reader.nextLine();
+            String[] splitted = line.split(" ");
+            if (line.length() > 0) {
+                for (int i = 0; i < splitted.length; i++) {
+                    splitted[i] = "-" + splitted[i];
+                }
+                klausa_solusi.append(String.join(" ", splitted));
+                klausa_solusi.append(" 0\n");
+                jumlah_input++;
+            }
+        }
+        return klausa_solusi.toString();
     }
 
     public static void input_template(FileWriter file_template, String klausa_input) {
