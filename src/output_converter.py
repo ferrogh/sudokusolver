@@ -35,3 +35,4 @@ class OutputConverter:
 
         f_in.close()
         f_out.close()
+        f_solution.close()
