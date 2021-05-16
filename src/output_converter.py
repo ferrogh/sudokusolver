@@ -20,6 +20,7 @@ class OutputConverter:
             f_out.write("1")
             res = f_in.readline()
             f_solution.write(res)
+            f_solution.write("\n")
             sat = res.split(" ")
             sat = [int(i) for i in sat if "-" not in i and i != ""]
             for i in sat:
