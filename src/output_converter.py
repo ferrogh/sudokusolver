@@ -19,9 +19,10 @@ class OutputConverter:
         if status == "SAT":
             f_out.write("1")
             res = f_in.readline()
-            sat = res.split(" ")[:-1]
+            res = res.split(" ")[:-1]
             sat = [int(i) for i in sat if "-" not in i and i != ""]
-            f_solution.write(" ".join(sat))
+            sol = [i for i in sat if "-" not in i and i != ""]
+            f_solution.write(" ".join(sol))
             f_solution.write("\n")
             for i in sat:
                 baris = (i - 1) // 256 + 1
