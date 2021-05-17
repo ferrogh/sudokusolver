@@ -22,7 +22,7 @@ class SelectPopup(Popup):
     button = ObjectProperty()
 
     def select(self, value, *args):
-        self.button.set_value(value)
+        self.button.set_value(value, is_user=True)
         self.dismiss()
 
 
@@ -37,8 +37,17 @@ class SudokuCell(MDRectangleFlatButton):
     def show_popup(self, *args):
         self.popup.open()
 
-    def set_value(self, value):
+    def set_value(self, value, is_user=False, is_clear=False):
+        if self.value != value and (is_user or is_clear):
+            solution_path = "io/solution.txt"
+            open(solution_path, "w").close()
         self.value = value
+        if is_user:
+            self.md_bg_color = (3 / 255, 169 / 255, 244 / 255, 0.7)
+            self.theme_text_color = "Primary"
+        if is_clear:
+            self.md_bg_color = (0, 0, 0, 0)
+            self.theme_text_color = "Custom"
 
 
 class SudokuBox(MDBoxLayout):
@@ -59,7 +68,7 @@ class Sudoku(MDGridLayout):
         for idx1, box in enumerate(boxes):
             cells = box.ids.box.children[::-1]
             for idx2, cell in enumerate(cells):
-                cell.set_value(None)
+                cell.set_value(None, is_clear=True)
 
     def solve(self):
 
@@ -74,7 +83,7 @@ class Sudoku(MDGridLayout):
             for idx1, box in enumerate(boxes):
                 cells = box.ids.box.children[::-1]
                 for idx2, cell in enumerate(cells):
-                    if cell.value is not None:
+                    if cell.value is not None and cell.theme_text_color == "Primary":
                         box_coords = (idx1 // 4, idx1 % 4)
                         cell_coords = (idx2 // 4, idx2 % 4)
                         print(
