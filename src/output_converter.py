@@ -21,7 +21,7 @@ class OutputConverter:
             res = f_in.readline()
             f_solution.write(res)
             f_solution.write("\n")
-            sat = res.split(" ")
+            sat = res.split(" ")[:-1]
             sat = [int(i) for i in sat if "-" not in i and i != ""]
             for i in sat:
                 baris = (i - 1) // 256 + 1
