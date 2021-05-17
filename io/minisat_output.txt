@@ -1,2 +1,1 @@
-Trivial problem
-UNSATISFIABLE
+PARSE ERROR! Unexpected char: -
