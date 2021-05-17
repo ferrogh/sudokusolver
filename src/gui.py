@@ -45,6 +45,10 @@ class SudokuCell(MDRectangleFlatButton):
             elif self.value is not None:
                 self.md_bg_color = (54 / 255, 153 / 255, 56 / 255, 1)
                 self.theme_text_color = "Primary"
+        elif self.md_bg_color == [54 / 255, 153 / 255, 56 / 255, 1]:
+            self.md_bg_color = (0, 0, 0, 0)
+            self.theme_text_color = "Custom"
+
         self.value = value
         if is_user:
             self.md_bg_color = (3 / 255, 169 / 255, 244 / 255, 0.7)
