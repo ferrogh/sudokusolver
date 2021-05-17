@@ -38,9 +38,13 @@ class SudokuCell(MDRectangleFlatButton):
         self.popup.open()
 
     def set_value(self, value, is_user=False, is_clear=False):
-        if self.value != value and (is_user or is_clear):
-            solution_path = "io/solution.txt"
-            open(solution_path, "w").close()
+        if self.value != value:
+            if is_user or is_clear:
+                solution_path = "io/solution.txt"
+                open(solution_path, "w").close()
+            elif self.value is not None:
+                self.md_bg_color = (54 / 255, 153 / 255, 56 / 255, 1)
+                self.theme_text_color = "Primary"
         self.value = value
         if is_user:
             self.md_bg_color = (3 / 255, 169 / 255, 244 / 255, 0.7)
