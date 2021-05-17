@@ -20,8 +20,8 @@ class OutputConverter:
             f_out.write("1")
             res = f_in.readline()
             res = res.split(" ")[:-1]
-            sat = [int(i) for i in sat if "-" not in i and i != ""]
-            sol = [i for i in sat if "-" not in i and i != ""]
+            sat = [int(i) for i in res if "-" not in i and i != ""]
+            sol = [i for i in res if "-" not in i and i != ""]
             f_solution.write(" ".join(sol))
             f_solution.write("\n")
             for i in sat:
