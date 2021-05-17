@@ -14,10 +14,14 @@ class OutputConverter:
 
         f_in = open("io/output.txt", "r")
         f_out = open("io/gui_output.txt", "w")
+        f_solution = open("io/solution.txt", "a")
         status = f_in.readline().split()[0]
         if status == "SAT":
             f_out.write("1")
-            sat = f_in.readline().split(" ")
+            res = f_in.readline()
+            f_solution.write(res)
+            f_solution.write("\n")
+            sat = res.split(" ")[:-1]
             sat = [int(i) for i in sat if "-" not in i and i != ""]
             for i in sat:
                 baris = (i - 1) // 256 + 1
@@ -32,3 +36,4 @@ class OutputConverter:
 
         f_in.close()
         f_out.close()
+        f_solution.close()
